@@ -2,9 +2,11 @@
 
 ## Description
 
-Design and implement a RESTful web service to facilitate a user authentication system. The authentication mechanism should be *token based*. Requests and responses should be in **JSON**.
+Fork this repo.  Design and implement a RESTful web service to facilitate a user authentication system. The authentication mechanism should be *token based*. Requests and responses should be in **JSON**.
 
 ## Requirements
+
+
 **Models**
 
 The **User** model should have the following properties (at minimum):
@@ -31,5 +33,5 @@ All of these endpoints should be written from a user's perspective.
 
 We expect this project to take an hour or two to complete (based on Rails or Sinatra, but other options include Python or Go). Feel free to use whichever database you'd like; we suggest Postgres. Bonus points for security, specs, etc. Do as little or as much as you like.
 
-Please commit your code into a git repository, and show your work and process through those commits.
+Please commit your code into your forked git repo, and show your work and process through those commits.
 
