@@ -9,11 +9,11 @@ Design and implement a RESTful web service to facilitate a user authentication s
 
 The **User** model should have the following properties (at minimum):
 
-`name
+`name`
 
-`email
+`email`
 
-`password
+`password`
 
 You should determine what, *if any*, additional models you will need.
 
