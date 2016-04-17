@@ -4,10 +4,7 @@ var redisClient = require('../config/redis-database').redisClient;
 var models = require("../models");
 var Promise = require("bluebird");
 var jwt = require('jsonwebtoken');
-
-
 var bcrypt = Promise.promisifyAll(require('bcrypt'));
-
 
 var SUCCESS = "Success login";
 var FAIL = 'Authentication failed. Wrong password.';
@@ -48,6 +45,75 @@ exports.logout = function (token) {
     return {success: true, message: "logged out"}
 };
 
+exports.add = function (mUser) {
+
+};
+
+exports.set = function (id, mUser) {
+    return new Promise(function (resolve, reject) {
+        models.user.findById(id).then(function (user) {
+            if (user) {
+                return exports.updateValues(user, mUser)
+            }
+            return reject();
+        }).then(function (updatedUser) {
+            return updatedUser.save()
+        }).then(function (value) {
+            return resolve(value)
+        }).catch(function (e) {
+            return reject(e);
+        })
+    });
+};
+
+exports.delete = function (id) {
+    return new Promise(function (resolve, reject) {
+        models.user.findById(id).then(function (mUser) {
+            if (mUser) {
+                return mUser.destroy();
+            }
+            return reject();
+        }).then(function () {
+            return resolve({success: true});
+        }).catch(function (e) {
+            console.log(e);
+
+            return reject(e)
+        })
+    });
+
+};
+
+exports.updateValues = function (user, mUser) {
+    return new Promise(function (resolve, reject) {
+        user.email = (mUser.email) ? mUser.email : user.email;
+        user.name = (mUser.name) ? mUser.name : user.name;
+        if (mUser.password) {
+            bcrypt.hashAsync(mUser.password, config.saltRounds).then(function (passwordHash) {
+                user.password = passwordHash;
+                return resolve(user);
+            });
+        }
+        else
+            return resolve(user);
+
+    });
+};
+
+exports.get = function (id) {
+    return new Promise(function (resolve, reject) {
+        models.user.findById(id).then(function (user) {
+            if (user) {
+                return resolve(user);
+            }
+
+            return reject();
+        }).catch(function (e) {
+            return reject(e);
+        })
+    });
+};
+
 exports.createToken = function (user) {
     "use strict";
     let tokenUser = {
@@ -58,5 +124,4 @@ exports.createToken = function (user) {
     return jwt.sign(tokenUser, config.secret, {
         expiresIn: config.expiration
     });
-
 };

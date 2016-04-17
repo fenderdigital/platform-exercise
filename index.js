@@ -32,15 +32,16 @@ app.use(morgan('dev'));
  */
 
 models.sequelize.sync().then(function () {
-    return bcrypt.hashAsync("12345678", 10);
+    return bcrypt.hashAsync("12345678", config.saltRounds);
 }).then(function (password) {
-    /*
      return models.user.create({
      name: "Alejandro",
      email: "arangel@fender.com",
      password: password
-     });*/
+     });
+
 });
+
 
 app.use('/', routes);
 app.use('/users', users);
