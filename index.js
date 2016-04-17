@@ -21,28 +21,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
-/*
- app.use(function(err, req, res, next) {
- res.status(err.status || 500);
- res.render('error', {
- message: err.message,
- error: (app.get('env') === 'development') ? err : {}
- });
- });
- */
-
-models.sequelize.sync().then(function () {
-    return bcrypt.hashAsync("12345678", config.saltRounds);
-}).then(function (password) {
-     return models.user.create({
-     name: "Alejandro",
-     email: "arangel@fender.com",
-     password: password
-     });
-
-});
-
-
 app.use('/', routes);
 app.use('/users', users);
 
