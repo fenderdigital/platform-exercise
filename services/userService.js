@@ -28,6 +28,7 @@ exports.authenticate = function (mail, password) {
             if (result) {
                 var token = exports.createToken(mUser);
                 redisClient.set(token, JSON.stringify(mUser));
+                redisClient.expire(token, config.expiration);
                 value.token = token;
             }
             value.success = result;
@@ -55,7 +56,7 @@ exports.createToken = function (user) {
     };
 
     return jwt.sign(tokenUser, config.secret, {
-        expiresIn: 86400 // expires in 24 hours
+        expiresIn: config.expiration
     });
 
 };
