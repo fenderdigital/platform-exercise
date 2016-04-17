@@ -1,14 +1,21 @@
 "use strict";
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define('user', {
-        name: DataTypes.STRING,
+        name: {
+            type: DataTypes.STRING,
+            notNull: true
+        },
         email: {
             type: DataTypes.STRING,
             unique: true,
             validate: {
                 isEmail: true
-            }
+            },
+            notNull: true
         },
-        password: DataTypes.STRING
+        password: {
+            type: DataTypes.STRING,
+            notNull: true
+        }
     });
 };
