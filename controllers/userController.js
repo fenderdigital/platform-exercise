@@ -2,6 +2,7 @@ var userService = require("../services/userService");
 var models = require("../models");
 
 exports.all = function (request, response) {
+
     models.user.findAll().then(function (users) {
         response.json(users);
     })
@@ -26,4 +27,11 @@ exports.authenticate = function (request, response) {
     userService.authenticate(email, password).then(function (value) {
         response.json(value);
     })
+};
+
+exports.logout = function (request, response) {
+    "use strict";
+    let token = request.body.token || request.query.token || request.headers['x-access-token'];
+
+    response.json(userService.logout(token));
 };

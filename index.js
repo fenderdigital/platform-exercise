@@ -7,7 +7,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var models = require("./models");
-
+var tokenManager = require('./config/redis-database');
 var Promise = require("bluebird");
 var bcrypt = Promise.promisifyAll(require('bcrypt'));
 

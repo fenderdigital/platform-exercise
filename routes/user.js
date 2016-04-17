@@ -7,4 +7,5 @@ var router = express.Router();
 
 router.get('/', middleware.protected, userController.all);
 
+
 module.exports = router;

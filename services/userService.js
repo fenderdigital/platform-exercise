@@ -1,6 +1,6 @@
 var env = process.env.NODE_ENV || "development";
 var config = require("../config/config")[env];
-
+var redisClient = require('../config/redis-database').redisClient;
 var models = require("../models");
 var Promise = require("bluebird");
 var jwt = require('jsonwebtoken');
@@ -25,9 +25,10 @@ exports.authenticate = function (mail, password) {
             mUser = user;
             return bcrypt.compareAsync(password, user.password)
         }).then(function (result) {
-            console.log(result);
             if (result) {
-                value.token = createToken(mUser);
+                var token = exports.createToken(mUser);
+                redisClient.set(token, JSON.stringify(mUser));
+                value.token = token;
             }
             value.success = result;
             value.message = (result) ? SUCCESS : FAIL;
@@ -39,7 +40,14 @@ exports.authenticate = function (mail, password) {
     });
 };
 
-createToken = function (user) {
+exports.logout = function (token) {
+    "use strict";
+    redisClient.del(token);
+
+    return {success: true, message: "logged out"}
+};
+
+exports.createToken = function (user) {
     "use strict";
     let tokenUser = {
         name: user.name,

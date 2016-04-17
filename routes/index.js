@@ -1,4 +1,5 @@
 var express = require('express');
+var middleware = require("./middleware");
 var userController = require("../controllers/userController");
 
 var router = express.Router();
@@ -10,5 +11,6 @@ router.get('/', function (req, res) {
 });
 
 router.post('/authenticate', userController.authenticate);
+router.get('/logout', middleware.protected, userController.logout);
 
 module.exports = router;
