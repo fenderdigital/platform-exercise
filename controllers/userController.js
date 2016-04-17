@@ -21,7 +21,12 @@ exports.get = function (request, response) {
 
 exports.add = function (request, response) {
     "use strict";
-    let id = request.params.id;
+    let user = exports.buildUserObject(request.body);
+    userService.add(user).then(function (value) {
+        response.json(value);
+    }).catch(function (e) {
+        return response.json(e);
+    });
 };
 
 exports.delete = function (request, response) {

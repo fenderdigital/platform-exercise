@@ -6,6 +6,7 @@ var userController = require("../controllers/userController");
 var router = express.Router();
 
 router.get("/", middleware.protected, userController.all);
+router.post("/", userController.add);
 router.get("/:id", middleware.protected, userController.get);
 router.put("/:id", middleware.protected, userController.set);
 router.delete("/:id", middleware.protected, userController.delete);

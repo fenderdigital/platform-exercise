@@ -46,7 +46,17 @@ exports.logout = function (token) {
 };
 
 exports.add = function (mUser) {
-
+    return new Promise(function (resolve, reject) {
+        models.user.create({
+            name: mUser.name,
+            email: mUser.email,
+            password: mUser.password
+        }).then(function (value) {
+            return resolve(value);
+        }).catch(function (e) {
+            return reject(e);
+        });
+    })
 };
 
 exports.set = function (id, mUser) {
