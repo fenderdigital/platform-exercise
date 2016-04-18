@@ -4,39 +4,44 @@
 
 Design and implement a RESTful web service to facilitate a user authentication system. The authentication mechanism should be *token based*. Requests and responses should be in **JSON**.
 
-## Requirements
+## Usage
+### Token
 
-**Models**
+The token is returned by the authenticate Endpoint, the token can be pass using
+**x-access-token** header
+or as a parameter in the url i.e.
+/users?**token=(valid token)**
 
-The **User** model should have the following properties (at minimum):
+### Endpoints
 
-1. name
-2. email
-3. password
+GET '/users' **protected**
 
-You should determine what, *if any*, additional models you will need.
+POST '/users'  **protected**
 
-**Endpoints**
+**Parameters**
 
-All of these endpoints should be written from a user's perspective.
+email (string) **unique** 
+name (string)
+password (string)
 
-1. **User** Registration
-2. Login (*token based*) - should return a token, given *valid* credentials
-3. Logout - logs a user out
-4. Update a **User**'s Information
-5. Delete a **User**
+GET '/users/:id' **protected**
 
-**README**
+PUT '/users/:id' **protected**
 
-Please include a readme file that explains your thinking, how to setup and run the project, and a description of what enhancements you might make if you had more time.
+**Parameters**
 
-**Additional Info**
+email (string)
+name (string)
+password (string)
 
-- We expect this project to take a few hours to complete
-- You can use Rails/Sinatra, Python, Go, node.js or shiny-new-framework X, as long as you tell us why you chose it and how it was a good fit for the challenge. 
-- Feel free to use whichever database you'd like; we suggest Postgres. 
-- Bonus points for security, specs, etc. 
-- Do as little or as much as you like.
+DELETE '/users/:id' **protected**
 
-Please fork this repo and commit your code into that fork.  Show your work and process through those commits.
+POST '/authenticate' 
+
+**Parameters**
+
+email (string)
+password (string)
+
+POST '/logout' **protected**
 
