@@ -21,6 +21,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
+models.sequelize.sync();
+
 app.use('/', routes);
 app.use('/users', users);
 

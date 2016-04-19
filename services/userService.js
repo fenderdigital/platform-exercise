@@ -47,10 +47,12 @@ exports.logout = function (token) {
 
 exports.add = function (mUser) {
     return new Promise(function (resolve, reject) {
-        models.user.create({
-            name: mUser.name,
-            email: mUser.email,
-            password: mUser.password
+        bcrypt.hashAsync(mUser.password, config.saltRounds).then(function (passwordHash) {
+            return models.user.create({
+                name: mUser.name,
+                email: mUser.email,
+                password: passwordHash
+            });
         }).then(function (value) {
             return resolve(value);
         }).catch(function (e) {
