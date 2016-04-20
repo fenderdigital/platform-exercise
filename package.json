@@ -1,0 +1,32 @@
+{
+  "name": "platform-test",
+  "version": "1.0.0",
+  "description": "Design and implement a RESTful web service to facilitate a user authentication system. The authentication mechanism should be token based. Requests and responses should be in JSON.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arangel1988/platform-test.git"
+  },
+  "author": "Alejandro Rangel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arangel1988/platform-test/issues"
+  },
+  "homepage": "https://github.com/arangel1988/platform-test#readme",
+  "dependencies": {
+    "bcrypt": "^0.8.5",
+    "bluebird": "^3.3.5",
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "jsonwebtoken": "^5.7.0",
+    "morgan": "^1.7.0",
+    "pg": "^4.5.3",
+    "pg-hstore": "^2.3.2",
+    "redis": "^2.6.0-1",
+    "sequelize": "^3.21.0"
+  }
+}
