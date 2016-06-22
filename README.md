@@ -31,7 +31,7 @@ All of these endpoints should be written from a user's perspective.
 Please include:
 - a readme file that explains your thinking
 - how to setup and run the project
-- if you chosoe to use a database, include instructions on how to set that up
+- if you chose to use a database, include instructions on how to set that up
 - if you have tests, include instructions on how to run them
 - a description of what enhancements you might make if you had more time.
 
