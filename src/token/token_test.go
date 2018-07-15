@@ -2,15 +2,17 @@ package token
 
 import (
 	"testing"
+
+	"github.com/mrsmuneton/platform-test/src/user"
 )
 
+func getUserStub() user.User {
+	return user.User{CurrentPassword: "P0werpuff", Email: "cinnamon@nice.com", Name: "Ray May"}
+}
+
 func TestCreateJWTToReturnTokenString(t *testing.T) {
-	t.Log("shine sun shine")
-	// email := "buffalo@shuffle.com"
-	// password := "and4llthatJ4ZZ"
-	expected_token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJuYmYiOjE0NDQ0Nzg0MDB9.u1riaD1rW97opCoAuRCTy4w58Br-Zk-bh7vLiRIsrpU"
-	tokenCreated := CreateUserJWT()
-	// tokenCreated := token.CreateJWT(email, password)
+	expected_token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWFkIjp0cnVlfQ.TiOLN041F3V2MSAORNU0CvPOBNjdMqMoUmRTTjnRd6w"
+	_, tokenCreated := CreateUserJWT(getUserStub())
 	if tokenCreated != expected_token {
 		t.Error("Token does not match expected token.")
 	}
