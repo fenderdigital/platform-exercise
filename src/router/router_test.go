@@ -4,6 +4,11 @@ import (
 	"testing"
 )
 
-func test(t *testing.T) {
-	t.Log("this is the router test")
+func TestRoutes(t *testing.T) {
+	var r = Routes()
+	t.Log(r)
 }
+
+// func TestLoginHandler(t *testing.T) {
+// 	var login = LoginHandler(w, r)
+// }
