@@ -1,0 +1,3 @@
+CREATE DATABASE platform;
+\c platform
+CREATE TABLE users (id bigserial primary key, currentPassword varchar(220), email varchar(220), name varchar(220), created_date  timestamp default current_timestamp, updated_date timestamp)
