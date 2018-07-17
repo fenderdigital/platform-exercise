@@ -2,18 +2,18 @@ package user
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/mrsmuneton/platform-test/src/error"
 )
 
+//using timestamsp ca improve sorting efficiency in queries
 type User struct {
-	Id              int       `id`
-	CreatedDate     time.Time `createdDate`
-	CurrentPassword string    `currentPassword`
-	Email           string    `email`
-	Name            string    `name`
-	UpdatedDate     time.Time `updatedDate`
+	Id              int    `id`
+	CreatedDate     string `createdDate` //cheating by a string, this must be a timestamp
+	CurrentPassword string `currentPassword`
+	Email           string `email`
+	Name            string `name`
+	UpdatedDate     string `updatedDate` //cheating by a string, this must be a timestamp
 }
 
 func ValidateUserMinimumFields(u User) (error.Error, User) {
