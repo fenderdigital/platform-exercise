@@ -6,8 +6,10 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/mrsmuneton/platform-test/src/session"
 	"github.com/mrsmuneton/platform-test/src/token"
 	"github.com/mrsmuneton/platform-test/src/user"
+	"github.com/mrsmuneton/platform-test/src/utils"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +22,14 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err == false {
 		_, token := token.CreateUserJWT(user.User{Email: userRecord.Email, Name: userRecord.Name})
-		w.Write([]byte(token))
+		t := utils.CurrentTime()
+		newSession := session.Session{Email: userRecord.Email, Token: token, UpdatedDate: t}
+		err := session.WriteSession(newSession)
+		if err != false {
+			w.Write([]byte("session not saved"))
+		} else {
+			w.Write([]byte(token))
+		}
 	} else {
 		w.Write([]byte("sorry"))
 	}

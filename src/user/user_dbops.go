@@ -2,9 +2,9 @@ package user
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/mrsmuneton/platform-test/src/db"
+	"github.com/mrsmuneton/platform-test/src/utils"
 )
 
 func CreateUser(newUser User) bool {
@@ -17,7 +17,7 @@ func CreateUser(newUser User) bool {
 
 	//The below is defective code and will be removed in the next iteration
 	var password = newUser.CurrentPassword //This must be encrypted with sha256 prior to storing, and should at least implement base64 from the client request
-	t := currentTime()
+	t := utils.CurrentTime()
 
 	_, queryerr := dbConnection.Query("INSERT INTO users(created_date, currentpassword, email, name, updated_date) VALUES($1,$2,$3,$4,$5);", t, password, newUser.Email, newUser.Name, t)
 	if queryerr != nil {
@@ -40,13 +40,4 @@ func LoginUser(userRequest User) (User, bool) {
 		errorBool = true
 	}
 	return userRecord, errorBool
-}
-
-func currentTime() string {
-	t := time.Now()
-	//This should return a timestamp in order
-	//Skimming over the rabbithole of time conversion for speed
-	//the line below is defective code and it will be removed in the next iteration
-	var now = t.String()
-	return now
 }
