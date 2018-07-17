@@ -17,17 +17,20 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	var userRequest user.User
 	body, _ := ioutil.ReadAll(r.Body)
 	var _ = json.Unmarshal(body, &userRequest)
-
 	dbConnection, queryerr := db.DBConnect()
-	err := dbConnection.QueryRow("SELECT id, email, name, updated_date FROM users WHERE currentpassword = \'"+userRequest.CurrentPassword+"\' AND email = \'"+userRequest.Email+"\';").Scan(&userRequest.Id, &userRequest.Email, &userRequest.Name, &userRequest.UpdatedDate)
+
+	var userRecord user.User
+	var query = "SELECT email, name FROM users WHERE currentpassword='" + userRequest.CurrentPassword + "' AND email='" + userRequest.Email + "'"
+	fmt.Println(query)
+	err := dbConnection.QueryRow(query).Scan(&userRecord.Email, &userRecord.Name)
 	if queryerr != nil || err != nil {
 		fmt.Println(err)
 		fmt.Println(queryerr)
-		w.Write([]byte("DB error"))
+		w.Write([]byte("DB error "))
 	}
 
 	if err == nil {
-		_, token := token.CreateUserJWT(user.User{Email: userRequest.Email, Name: userRequest.Name})
+		_, token := token.CreateUserJWT(user.User{Email: userRecord.Email, Name: userRecord.Name})
 		w.Write([]byte(token))
 	} else {
 		w.Write([]byte("sorry"))
