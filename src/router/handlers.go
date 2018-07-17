@@ -36,8 +36,13 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Logout Handler")
+	var userRequest user.User
+	body, _ := ioutil.ReadAll(r.Body)
+	var _ = json.Unmarshal(body, &userRequest)
 
+	session.DeleteSession(userRequest.Email)
+
+	w.Write([]byte("Session deleted"))
 }
 
 func UserRecordHandler(w http.ResponseWriter, r *http.Request) {

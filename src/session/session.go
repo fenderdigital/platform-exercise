@@ -23,3 +23,15 @@ func WriteSession(CurrentSession Session) bool {
 	}
 	return error_result
 }
+
+func DeleteSession(Email string) bool {
+	var error_result = false
+	dbConnection, err := db.DBConnect()
+	_, queryerr := dbConnection.Query("DELETE FROM sessions WHERE email=$1", Email)
+	if err != nil || queryerr != nil {
+		fmt.Println(err)
+		fmt.Println(queryerr)
+		error_result = true
+	}
+	return error_result
+}
