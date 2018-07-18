@@ -73,18 +73,23 @@ func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
 	userRequest, err = readUserRequestBody(r)
 	fmt.Println(err)
 
+	url_id := r.URL.Query().Get("id")
+
 	switch r.Method {
 	case "DELETE":
 		msg = user.DeleteUser(userRequest)
+	case "GET":
+		userRequest, err = user.GetUserRecordById(url_id)
 	case "PATCH":
 		// could implement new method in order to handle partial updates of the record
-		msg = user.UpdateUserFields(userRequest)
+		userRequest, err = user.UpdateUserFields(url_id, userRequest)
 	case "POST":
 		// could implement new method that only accepts new records
-		msg = user.UpdateUserFields(userRequest)
+		userRequest, err = user.UpdateUserFields(url_id, userRequest)
 	case "PUT":
-		msg = user.UpdateUserFields(userRequest)
+		userRequest, err = user.UpdateUserFields(url_id, userRequest)
 	default:
+		err = true
 	}
 	w.Write([]byte(msg))
 }

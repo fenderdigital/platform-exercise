@@ -20,6 +20,12 @@ type User struct {
 
 func CreateUser(newUser User) bool {
 	var error_result = false
+
+	_, e := ValidateUserMinimumFields(newUser)
+	if e.Code != "" {
+		return true
+	}
+
 	dbConnection, err := db.DBConnect()
 	if err != nil {
 		fmt.Println(err)
@@ -43,6 +49,42 @@ func DeleteUser(u User) string {
 	return "User Deleted"
 }
 
+func GetUserRecordById(user_id string) (User, bool) {
+	var error_result bool
+	var userRecord User
+	dbConnection, err := db.DBConnect()
+	if err != nil {
+		fmt.Println(err)
+		error_result = true
+	}
+	var query = "SELECT id, created_date, email, name, updated_date FROM users WHERE id =" + user_id
+	fmt.Println(query)
+	queryerr := dbConnection.QueryRow(query).Scan(&userRecord.Id, &userRecord.CreatedDate, &userRecord.Email, &userRecord.Name, &userRecord.UpdatedDate)
+	if queryerr != nil {
+		fmt.Println(queryerr)
+		error_result = true
+	}
+	return userRecord, error_result
+}
+
+func GetUserRecordByEmail(email string) (User, bool) {
+	var error_result bool
+	var userRecord User
+	dbConnection, err := db.DBConnect()
+	if err != nil {
+		fmt.Println("DB connection issue", err)
+		error_result = true
+	}
+	var query = "SELECT id, created_date, email, name, updated_date FROM users WHERE email=$1"
+	fmt.Println(query)
+	queryerr := dbConnection.QueryRow(query, email).Scan(&userRecord.Id, &userRecord.CreatedDate, &userRecord.Email, &userRecord.Name, &userRecord.UpdatedDate)
+	if queryerr != nil {
+		fmt.Println(queryerr)
+		error_result = true
+	}
+	return userRecord, error_result
+}
+
 func LoginUser(userRequest User) (User, bool) {
 	var errorBool = false
 	dbConnection, queryerr := db.DBConnect()
@@ -57,8 +99,22 @@ func LoginUser(userRequest User) (User, bool) {
 	return userRecord, errorBool
 }
 
-func UpdateUserFields(u User) string {
-	return "User Updated"
+func UpdateUserFields(user_id string, u User) (User, bool) {
+	var error_result = false
+	dbConnection, err := db.DBConnect()
+	if err != nil {
+		fmt.Println(err)
+		error_result = true
+	}
+	var now = utils.CurrentTime()
+	var query = "UPDATE users SET currentpassword='" + u.CurrentPassword + "', email='" + u.Email + "', name='" + u.Name + "', updated_date='" + now + "' WHERE id=" + string(user_id) + "RETURNING id, created_date, email, name, updated_date"
+	fmt.Println(query) //this is unsuitable for production because it prints the users password
+	queryerr := dbConnection.QueryRow(query).Scan(&u.Id, &u.CreatedDate, &u.Email, &u.Name, &u.UpdatedDate)
+	if queryerr != nil {
+		fmt.Println(queryerr)
+		error_result = true
+	}
+	return u, error_result
 }
 
 func ValidateUserMinimumFields(u User) (User, error.Error) {
