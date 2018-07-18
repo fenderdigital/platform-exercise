@@ -10,3 +10,11 @@ func CurrentTime() string {
 	var now = t.String()
 	return now
 }
+
+type errorString struct {
+	s string
+}
+
+func (e *errorString) Error() string {
+	return e.s
+}
