@@ -46,6 +46,16 @@ func TestUpdateUserReturnsSuccess(t *testing.T) {
 	}
 }
 
+func TestDeleteUserReturnsSuccess(t *testing.T) {
+	var userStub = getUserStub()
+	var userRecord, err = GetUserRecordByEmail(userStub.Email)
+	id := strconv.Itoa(userRecord.Id)
+	err1 = DeleteUser(userRecord)
+	if err1 != false {
+		t.Error("Delete user returned unexpected error")
+	}
+}
+
 func TestValidateMinimumFieldsFailReturnsError(t *testing.T) {
 	var userStub = getUserStub()
 	userStub.Name = ""

@@ -68,7 +68,6 @@ func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 
 func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
 	var err bool
-	var msg string
 	var userRequest user.User
 	userRequest, err = readUserRequestBody(r)
 	fmt.Println(err)
@@ -77,7 +76,8 @@ func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "DELETE":
-		msg = user.DeleteUser(userRequest)
+		err = user.DeleteUser(url_id)
+		userRequest = user.User{}
 	case "GET":
 		userRequest, err = user.GetUserRecordById(url_id)
 	case "PATCH":
@@ -91,7 +91,13 @@ func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
 	default:
 		err = true
 	}
-	w.Write([]byte(msg))
+	if err != true {
+		b, marshalerr := json.Marshal(userRequest)
+		fmt.Println(marshalerr)
+		w.Write(b)
+	} else {
+		w.Write([]byte("error"))
+	}
 }
 
 func readUserRequestBody(r *http.Request) (user.User, bool) {

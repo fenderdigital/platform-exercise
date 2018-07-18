@@ -45,8 +45,23 @@ func CreateUser(newUser User) bool {
 	return error_result
 }
 
-func DeleteUser(u User) string {
-	return "User Deleted"
+func DeleteUser(id string) bool {
+	var error_result = false
+
+	dbConnection, err := db.DBConnect()
+	if err != nil {
+		fmt.Println(err)
+		error_result = true
+	}
+	query := "DELETE FROM users WHERE id=$1"
+	fmt.Println(query)
+	_, queryerr := dbConnection.Query(query, id)
+	if queryerr != nil {
+		fmt.Println(queryerr)
+		error_result = true
+	}
+
+	return error_result
 }
 
 func GetUserRecordById(user_id string) (User, bool) {
