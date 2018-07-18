@@ -16,7 +16,15 @@ type User struct {
 	UpdatedDate     string `updatedDate` //cheating by a string, this must be a timestamp
 }
 
-func ValidateUserMinimumFields(u User) (error.Error, User) {
+func DeleteUser(u User) string {
+	return "User Deleted"
+}
+
+func UpdateUserFields(u User) string {
+	return "User Updated"
+}
+
+func ValidateUserMinimumFields(u User) (User, error.Error) {
 	var requiredFields string
 	e := error.Error{Code: ""}
 	fmt.Print(e)
@@ -37,5 +45,5 @@ func ValidateUserMinimumFields(u User) (error.Error, User) {
 		e.Code = "Please provide all fields, including:" + requiredFields
 	}
 
-	return e, u
+	return u, e
 }

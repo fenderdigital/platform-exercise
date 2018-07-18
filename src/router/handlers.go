@@ -67,11 +67,26 @@ func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
-	// var userRequest user.User
-	// var err bool
-	// userRequest, err = readUserRequestBody(r)
+	var err bool
+	var msg string
+	var userRequest user.User
+	userRequest, err = readUserRequestBody(r)
+	fmt.Println(err)
 
-	w.Write([]byte("wip"))
+	switch r.Method {
+	case "DELETE":
+		msg = user.DeleteUser(userRequest)
+	case "PATCH":
+		// could implement new method in order to handle partial updates of the record
+		msg = user.UpdateUserFields(userRequest)
+	case "POST":
+		// could implement new method that only accepts new records
+		msg = user.UpdateUserFields(userRequest)
+	case "PUT":
+		msg = user.UpdateUserFields(userRequest)
+	default:
+	}
+	w.Write([]byte(msg))
 }
 
 func readUserRequestBody(r *http.Request) (user.User, bool) {

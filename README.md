@@ -8,13 +8,10 @@ Design and implement a RESTful web service to facilitate a user authentication s
 
 **Models**
 
-The **User** model should have the following properties (at minimum):
-
-1. name
-2. email
-3. password
-
-You should determine what, *if any*, additional models you will need.
+1. user (implemented)
+2. session (implemented)
+3. password_history (not implemented)
+4. user_record_history (not implemented)
 
 **Endpoints**
 
@@ -35,13 +32,11 @@ Please include:
 - if you have tests, include instructions on how to run them
 - a description of what enhancements you might make if you had more time.
 
-**Additional Info**
+**Setup**
 
-- We expect this project to take a few hours to complete
-- You can use Rails/Sinatra, Python, Go, node.js or shiny-new-framework X, as long as you tell us why you chose it and how it was a good fit for the challenge. 
-- Feel free to use whichever database you'd like; we suggest Postgres. 
-- Bonus points for security, specs, etc. 
-- Do as little or as much as you like.
+- I'm using docker compose to run this project, however since I choose to load the compiled go file I ran into bit of a rabbit hole setting up the script that waits for the db to start.  In production, I'd be reasonably sure the database was reachable because I would have a separate resilient database cluster.  To mitigate this local, please bring up the database first and then run the web server by executing these commands in order:
+- `docker build -t platform_test .`  (build the docker image)
+- `docker-compose run -p 5432:5432 -d localhost` (start the postgres server)
+- ``
 
 Please fork this repo and commit your code into that fork.  Show your work and process through those commits.
-

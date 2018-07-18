@@ -4,9 +4,14 @@ COPY ./ /go/src/github.com/mrsmuneton/platform-test
 WORKDIR /go/src/github.com/mrsmuneton/platform-test
 
 RUN apk update && apk add git
-RUN go get ./
-RUN go build
 
-CMD ./platform-test
+RUN go get -d -v ./...
+RUN go install -v ./...
+RUN go build -o ./bin/platform-test
 
 EXPOSE 8080
+
+RUN pwd
+RUN ls -la
+
+ENTRYPOINT ["go", "run", "main.go"]
