@@ -1,0 +1,18 @@
+version: '3'
+services:
+  platform_test:
+    image: platform_test
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    volumes:
+      - ./:/go/src/github.com/mrsmuneton/platform-test
+    command: ["sleep 8", "go run main.go"]
+
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data

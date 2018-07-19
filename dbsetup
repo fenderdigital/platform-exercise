@@ -1,0 +1,5 @@
+CREATE DATABASE platform;
+\c platform
+CREATE TABLE users (id bigserial primary key, currentPassword varchar(220), email varchar(220), name varchar(220), created_date  varchar(220), updated_date varchar(220));
+CREATE TABLE sessions (id bigserial primary key, email varchar(220), token text, name varchar(220), updated_date varchar(220));
+\d
