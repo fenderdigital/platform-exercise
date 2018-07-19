@@ -113,8 +113,6 @@ func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		// could implement new method that only accepts new user records
 		userRequest, err = user.UpdateUserFields(url_id, userRequest)
-	case "PUT":
-		userRequest, err = user.UpdateUserFields(url_id, userRequest)
 	default:
 		err = true
 	}
