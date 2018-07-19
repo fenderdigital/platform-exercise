@@ -3,6 +3,7 @@
 ## Description
 
 Design and implement a RESTful web service to facilitate a user authentication system. The authentication mechanism should be *token based*. Requests and responses should be in **JSON**.
+Given these requirements, JWT makes sense.  The implementation here could be improved by incorporating middleware token handling.
 
 ## Requirements
 
@@ -15,7 +16,7 @@ Design and implement a RESTful web service to facilitate a user authentication s
 
 **Endpoints**
 
-All of these endpoints should be written from a user's perspective.
+All of these endpoints should be written from a user's perspective. The token the user receives upon login must be provided as an Authorization header for Logout, Update, and Delete operations.
 
 1. **User** Registration
 2. Login (*token based*) - should return a token, given *valid* credentials
@@ -34,9 +35,19 @@ Please include:
 
 **Setup**
 
-- I'm using docker compose to run this project, however since I choose to load the compiled go file I ran into bit of a rabbit hole setting up the script that waits for the db to start.  In production, I'd be reasonably sure the database was reachable because I would have a separate resilient database cluster.  To mitigate this local, please bring up the database first and then run the web server by executing these commands in order:
-- `docker build -t platform_test .`  (build the docker image)
-- `docker-compose run -p 5432:5432 -d localhost` (start the postgres server)
-- ``
+I'm using docker compose to run this project, please follow these steps to configure:
+- `docker build -t platform_test .` (build the docker image)
+- `docker-compose up -d` (instantiate the containers)
+- `docker exec -it postgres_docker_container_id psql -U postgres`
+  - Copy the contents of this dbsetup and paste into the postgres prompt
 
-Please fork this repo and commit your code into that fork.  Show your work and process through those commits.
+**Test**
+Docker exec into the running server container (use `docker ps` to get the container id)
+- `docker exec -it server_container_hash sh`
+- `go test ./... -v` Run the tests
+
+**Enhancements**
+- Fix the plain text password transmission
+- Refactor and DRY up things
+- Track password and user record updates
+- Add an admin claim that allows reading and modifying records that other than the user's own

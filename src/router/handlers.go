@@ -37,8 +37,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			w.Write([]byte(token))
 		}
-	} else {
-		w.Write([]byte("sorry"))
 	}
 }
 
@@ -61,9 +59,6 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	request_id = strconv.Itoa(userRequest.Id)
 
 	sessionToken, user_id, valid = isAuthorizedToken(r)
-	fmt.Println(user_id)
-	fmt.Println(request_id)
-	fmt.Println(valid)
 	if user_id != request_id || valid == false {
 		w.Write([]byte("Invalid credentials"))
 		return
