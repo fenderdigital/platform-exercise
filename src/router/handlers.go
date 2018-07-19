@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/mrsmuneton/platform-test/src/session"
@@ -42,12 +43,33 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
-	var userRequest user.User
 	var err bool
+	var err1 bool
+	var request_id string
+	var sessionToken string
+	var user_id string
+	var userRequest user.User
+	var valid bool
 	userRequest, err = readUserRequestBody(r)
-	fmt.Println(err)
+	userRequest, err1 = user.GetUserRecordByEmail(userRequest.Email)
+	if err != false || err1 != false {
+		fmt.Println(err)
+		fmt.Println(err1)
+		w.Write([]byte("error"))
+		return
+	}
+	request_id = strconv.Itoa(userRequest.Id)
 
-	session.DeleteSession(userRequest.Email)
+	sessionToken, user_id, valid = isAuthorizedToken(r)
+	fmt.Println(user_id)
+	fmt.Println(request_id)
+	fmt.Println(valid)
+	if user_id != request_id || valid == false {
+		w.Write([]byte("Invalid credentials"))
+		return
+	}
+
+	session.DeleteSession(sessionToken)
 
 	w.Write([]byte("Session deleted"))
 }
@@ -78,10 +100,7 @@ func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
 
 	url_id := r.URL.Query().Get("id")
 
-	header := r.Header.Get("Authorization")
-	jwToken := strings.Trim(strings.Replace(header, "Bearer", "", 1), " ")
-	user_id, valid = token.ParseJWT(jwToken)
-
+	_, user_id, valid = isAuthorizedToken(r)
 	if user_id != url_id || valid == false {
 		w.Write([]byte("Invalid credentials"))
 		return
@@ -129,4 +148,13 @@ func readUserRequestBody(r *http.Request) (user.User, bool) {
 	}
 
 	return userRequest, false
+}
+
+func isAuthorizedToken(r *http.Request) (string, string, bool) {
+	var user_id string
+	var valid bool
+	header := r.Header.Get("Authorization")
+	jwToken := strings.Trim(strings.Replace(header, "Bearer", "", 1), " ")
+	user_id, valid = token.ParseJWT(jwToken)
+	return jwToken, user_id, valid
 }

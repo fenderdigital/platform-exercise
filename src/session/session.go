@@ -24,10 +24,10 @@ func WriteSession(CurrentSession Session) bool {
 	return error_result
 }
 
-func DeleteSession(Email string) bool {
+func DeleteSession(jwToken string) bool {
 	var error_result = false
 	dbConnection, err := db.DBConnect()
-	_, queryerr := dbConnection.Query("DELETE FROM sessions WHERE email=$1", Email)
+	_, queryerr := dbConnection.Query("DELETE FROM sessions WHERE token=$1", jwToken)
 	if err != nil || queryerr != nil {
 		fmt.Println(err)
 		fmt.Println(queryerr)
