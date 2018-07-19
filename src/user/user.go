@@ -116,6 +116,11 @@ func LoginUser(userRequest User) (User, bool) {
 
 func UpdateUserFields(user_id string, u User) (User, bool) {
 	var error_result = false
+	_, e := ValidateUserMinimumFields(u)
+	if e.Code != "" {
+		return u, true
+	}
+
 	dbConnection, err := db.DBConnect()
 	if err != nil {
 		fmt.Println(err)

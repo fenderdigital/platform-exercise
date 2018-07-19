@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/mrsmuneton/platform-test/src/session"
 	"github.com/mrsmuneton/platform-test/src/token"
 	"github.com/mrsmuneton/platform-test/src/user"
@@ -68,6 +69,7 @@ func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 
 func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
 	var err bool
+	var valid bool
 	var userRequest user.User
 	userRequest, err = readUserRequestBody(r)
 	fmt.Println(err)
@@ -79,6 +81,8 @@ func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
 		err = user.DeleteUser(url_id)
 		userRequest = user.User{}
 	case "GET":
+		valid = validToken(r)
+		fmt.Println(valid)
 		userRequest, err = user.GetUserRecordById(url_id)
 	case "PATCH":
 		// could implement new method in order to handle partial updates of the record
@@ -96,7 +100,7 @@ func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(marshalerr)
 		w.Write(b)
 	} else {
-		w.Write([]byte("error"))
+		w.Write([]byte("error, please verify all required fields (email,name, password) are present"))
 	}
 }
 
@@ -116,4 +120,22 @@ func readUserRequestBody(r *http.Request) (user.User, bool) {
 	}
 
 	return userRequest, false
+}
+
+func validToken(r *http.Request) bool {
+	bearer := r.Header.Get("Authorization")
+	if bearer == "" {
+		return false
+	}
+	token, _ := jwt.Parse(bearer, func(token *jwt.Token) (interface{}, error) {
+		return []byte("2hZ2cpjxFSz8sR2MbKqo7XLz4HS6Nx4tuBWlLpvIrXQPR5O36syvcefGZAdbZisog9LWPvDCYEJajl9X"), nil
+	})
+	fmt.Println(token)
+	// fmt.Println(err)
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		fmt.Println(claims)
+	} else {
+		fmt.Println("fail")
+	}
+	return true
 }
