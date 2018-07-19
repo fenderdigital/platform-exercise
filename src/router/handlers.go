@@ -111,7 +111,7 @@ func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
 		// could implement new method in order to handle partial updates of the record
 		userRequest, err = user.UpdateUserFields(url_id, userRequest)
 	case "POST":
-		// could implement new method that only accepts new records
+		// could implement new method that only accepts new user records
 		userRequest, err = user.UpdateUserFields(url_id, userRequest)
 	case "PUT":
 		userRequest, err = user.UpdateUserFields(url_id, userRequest)

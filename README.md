@@ -48,6 +48,8 @@ Docker exec into the running server container (use `docker ps` to get the contai
 
 **Enhancements**
 - Fix the plain text password transmission
+- Enforce email uniqueness across Users
 - Refactor and DRY up things
+- Standardize Info and Error logging
 - Track password and user record updates
 - Add an admin claim that allows reading and modifying records that other than the user's own
