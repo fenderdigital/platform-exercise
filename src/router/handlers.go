@@ -26,7 +26,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err == false {
-		_, token := token.CreateUserJWT(user.User{Email: userRecord.Email, Name: userRecord.Name})
+		token, _ := token.CreateUserJWT(user.User{Email: userRecord.Email, Name: userRecord.Name})
 		t := utils.CurrentTime()
 		newSession := session.Session{Email: userRecord.Email, Token: token, UpdatedDate: t}
 		err := session.WriteSession(newSession)
@@ -72,6 +72,8 @@ func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
 
 	userRequest, err = readUserRequestBody(r)
 	fmt.Println(err)
+
+	url_id := r.URL.Query().Get("id")
 
 	switch r.Method {
 	case "DELETE":

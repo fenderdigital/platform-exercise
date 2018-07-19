@@ -49,8 +49,11 @@ func TestUpdateUserReturnsSuccess(t *testing.T) {
 func TestDeleteUserReturnsSuccess(t *testing.T) {
 	var userStub = getUserStub()
 	var userRecord, err = GetUserRecordByEmail(userStub.Email)
+	if err != false {
+		t.Error("Delete user unexpectedly failed to fetch user record")
+	}
 	id := strconv.Itoa(userRecord.Id)
-	err1 = DeleteUser(userRecord)
+	var err1 = DeleteUser(id)
 	if err1 != false {
 		t.Error("Delete user returned unexpected error")
 	}

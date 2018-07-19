@@ -4,9 +4,12 @@ import (
 	"fmt"
 
 	"github.com/mrsmuneton/platform-test/src/db"
-	"github.com/mrsmuneton/platform-test/src/error"
 	"github.com/mrsmuneton/platform-test/src/utils"
 )
+
+type Error struct {
+	Code string `code`
+}
 
 //using timestamsp ca improve sorting efficiency in queries
 type User struct {
@@ -137,9 +140,9 @@ func UpdateUserFields(user_id string, u User) (User, bool) {
 	return u, error_result
 }
 
-func ValidateUserMinimumFields(u User) (User, error.Error) {
+func ValidateUserMinimumFields(u User) (User, Error) {
 	var requiredFields string
-	e := error.Error{Code: ""}
+	e := Error{Code: ""}
 	fmt.Print(e)
 
 	if u.CurrentPassword == "" {
