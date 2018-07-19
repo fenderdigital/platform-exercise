@@ -35,9 +35,10 @@ Please include:
 
 **Setup**
 
-I'm using docker compose to run this project, please follow these steps to configure:
+Please follow these steps to configure:
+- Update the jwt signing key in the line 6 of platform-test/src/secret/secret.go, in the method Fetch
 - `docker build -t platform_test .` (build the docker image)
-- `docker-compose up -d` (instantiate the containers)
+- `docker-compose up` (instantiate the containers)
 - `docker exec -it postgres_docker_container_id psql -U postgres`
   - Copy the contents of this dbsetup and paste into the postgres prompt
 
@@ -53,3 +54,5 @@ Docker exec into the running server container (use `docker ps` to get the contai
 - Standardize Info and Error logging
 - Track password and user record updates
 - Add an admin claim that allows reading and modifying records that other than the user's own
+- Plan and build integrations for 3rd party login providers like google, facebook, linkedin, github etc
+- Compaction function fired from lambda every day that removes sessions records > week old

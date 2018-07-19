@@ -13,25 +13,25 @@ type Session struct {
 }
 
 func WriteSession(CurrentSession Session) bool {
-	var error_result = false
 	dbConnection, err := db.DBConnect()
 	_, queryerr := dbConnection.Query("INSERT INTO sessions(email, token, updated_date) VALUES($1,$2,$3);", CurrentSession.Email, CurrentSession.Token, CurrentSession.UpdatedDate)
-	if err != nil || queryerr != nil {
-		fmt.Println(err)
-		fmt.Println(queryerr)
-		error_result = true
-	}
+	error_result := handleErrors(err, queryerr)
 	return error_result
 }
 
 func DeleteSession(jwToken string) bool {
-	var error_result = false
 	dbConnection, err := db.DBConnect()
 	_, queryerr := dbConnection.Query("DELETE FROM sessions WHERE token=$1", jwToken)
+	error_result := handleErrors(err, queryerr)
+	return error_result
+}
+
+func handleErrors(err error, queryerr error) bool {
 	if err != nil || queryerr != nil {
 		fmt.Println(err)
 		fmt.Println(queryerr)
-		error_result = true
+		return true
+	} else {
+		return false
 	}
-	return error_result
 }
