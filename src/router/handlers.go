@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/mrsmuneton/platform-test/src/session"
 	"github.com/mrsmuneton/platform-test/src/token"
@@ -26,7 +27,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err == false {
-		token, _ := token.CreateUserJWT(user.User{Email: userRecord.Email, Name: userRecord.Name})
+		token, _ := token.CreateUserJWT(userRecord)
 		t := utils.CurrentTime()
 		newSession := session.Session{Email: userRecord.Email, Token: token, UpdatedDate: t}
 		err := session.WriteSession(newSession)
@@ -68,12 +69,23 @@ func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 
 func UserRecordHandler(w http.ResponseWriter, r *http.Request) {
 	var err bool
+	var user_id string
 	var userRequest user.User
+	var valid bool
 
 	userRequest, err = readUserRequestBody(r)
 	fmt.Println(err)
 
 	url_id := r.URL.Query().Get("id")
+
+	header := r.Header.Get("Authorization")
+	jwToken := strings.Trim(strings.Replace(header, "Bearer", "", 1), " ")
+	user_id, valid = token.ParseJWT(jwToken)
+
+	if user_id != url_id || valid == false {
+		w.Write([]byte("Invalid credentials"))
+		return
+	}
 
 	switch r.Method {
 	case "DELETE":

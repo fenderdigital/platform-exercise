@@ -107,8 +107,8 @@ func LoginUser(userRequest User) (User, bool) {
 	var errorBool = false
 	dbConnection, queryerr := db.DBConnect()
 	var userRecord User
-	var query = "SELECT email, name FROM users WHERE currentpassword='" + userRequest.CurrentPassword + "' AND email='" + userRequest.Email + "'"
-	err := dbConnection.QueryRow(query).Scan(&userRecord.Email, &userRecord.Name)
+	var query = "SELECT id, email, name FROM users WHERE currentpassword='" + userRequest.CurrentPassword + "' AND email='" + userRequest.Email + "'"
+	err := dbConnection.QueryRow(query).Scan(&userRecord.Id, &userRecord.Email, &userRecord.Name)
 	if queryerr != nil || err != nil {
 		fmt.Println(err)
 		fmt.Println(queryerr)

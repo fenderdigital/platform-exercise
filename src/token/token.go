@@ -2,6 +2,7 @@ package token
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -20,6 +21,9 @@ func CreateUserJWT(u user.User) (string, Error) {
 	jwToken := jwt.New(jwt.SigningMethodHS256)
 	claims := jwToken.Claims.(jwt.MapClaims)
 
+	fmt.Println(u)
+	fmt.Println(u.Id)
+
 	week := time.Now().AddDate(0, 0, 7).Unix()
 	claims["expire"] = week
 	claims["userId"] = u.Id
@@ -32,18 +36,18 @@ func CreateUserJWT(u user.User) (string, Error) {
 	return tokenstring, err
 }
 
-func ParseJWT(tokenString string) bool {
+func ParseJWT(tokenString string) (string, bool) {
 	var signing_secret string = fetchSecret()
-	parsedToken, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+	parsedToken, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return []byte(signing_secret), nil
 	})
 
 	if claims, ok := parsedToken.Claims.(jwt.MapClaims); ok && parsedToken.Valid {
-		fmt.Println(claims["userId"])
+		userid := strconv.FormatFloat(claims["userId"].(float64), 'f', -1, 64)
+		return userid, true
 	} else {
-		fmt.Println(err)
+		return "0", false
 	}
-	return true
 }
 
 func fetchSecret() string {
