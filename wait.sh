@@ -1,7 +1,5 @@
 #!/bin/bash
 # wait-for-postgres.sh
-echo "this call"
-
 set -e
 
 host="$1"

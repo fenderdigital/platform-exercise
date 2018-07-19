@@ -5,11 +5,12 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - localhost
+      - db
     volumes:
       - ./:/go/src/github.com/mrsmuneton/platform-test
+    command: ["sleep 5", "go run main.go"]
 
-  localhost:
+  db:
     image: postgres
     ports:
       - 5432:5432

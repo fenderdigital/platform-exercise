@@ -11,7 +11,4 @@ RUN go build -o ./bin/platform-test
 
 EXPOSE 8080
 
-RUN pwd
-RUN ls -la
-
 ENTRYPOINT ["go", "run", "main.go"]
