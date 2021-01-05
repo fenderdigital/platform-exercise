@@ -13,6 +13,10 @@ for mac:
 
  1. pg_ctl -D /usr/local/var/postgres start
  
+ 2. psql postgres
+ 
+ 3. CREATE DATABASE testdb;
+
 
 
 
