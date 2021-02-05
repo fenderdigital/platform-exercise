@@ -57,3 +57,20 @@ exports.signin = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+exports.validateUser = (req, res, next) => {
+  User.findOne({
+    where: {
+      id: req.userId 
+    }
+  }).then(user => {
+      if (user) {
+        next();
+        return;
+      }
+      return res.status(401).send({
+        message: UNAUTH_FORBIDDEN
+      }); 
+    });
+
+
+}

@@ -1,12 +1,15 @@
 
-module.exports ={
-  TEST_USER:{
+module.exports= {
+  TEST_USER: {
     name: "fender_test",
     email: "testme@fender-test.com",
     password: "1232123"
   },
-  DISPLAY_MESSAGE:"Displaying Contents",
-  REGISTERED_SUCCESS:"User was registered successfully!",
-  USER_NOT_FOUND:"User Not found.",
-  INVALID_PASSWORD:"Invalid Password!"
+  DISPLAY_MESSAGE: "Displaying Contents",
+  REGISTERED_SUCCESS: "User was registered successfully!",
+  USER_NOT_FOUND: "User Not found.",
+  INVALID_PASSWORD: "Invalid Password!",
+  UNAUTH_FORBIDDEN: "Unauthorized Access Forbidden!",
+  USER_PRIVATE: "Displaying Private User Content.",
+  NEW_NAME: "new fender name"
 }

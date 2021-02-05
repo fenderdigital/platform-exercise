@@ -1,3 +1,9 @@
+/*
+ * Sequelize init.  
+ * TODO - Add ROLE Model for User-Role based schema
+ * 
+*/
+
 var config = require("../configurations/postgres.config.js");
 const Sequelize = require("sequelize");
 

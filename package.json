@@ -23,7 +23,8 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.5.0"
+    "sequelize": "^6.5.0",
+    "node-cache": "^5.1.2"
   },
   "devDependencies": {
     "chai": "^4.3.0",

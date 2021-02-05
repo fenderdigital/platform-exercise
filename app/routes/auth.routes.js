@@ -1,3 +1,7 @@
+
+/*
+ * Auth End points
+*/
 const { verifySignUp, authToken } = require("../middleware");
 const controller = require("../controllers/auth.controller");
 
@@ -18,4 +22,5 @@ module.exports = function(app) {
     controller.signup
   );
  app.post("/api/auth/signin", controller.signin);
+ app.post("/api/auth/logout",  [authToken.verifyToken,authToken.destroyToken]);
 };

@@ -1,3 +1,7 @@
+/*
+ *  User End points
+*/
+const { authToken } = require("../middleware");
 const controller = require("../controllers/user.controller");
 
 module.exports = function(app) {
@@ -9,6 +13,18 @@ module.exports = function(app) {
     next();
   });
 
-
+//Default route
   app.get("/", controller.allAccess);
+
+//Access protected resource
+  app.get(
+    "/api/test/user",
+    [authToken.verifyToken],
+    controller.userPrivate
+  );
+  app.put(
+    "/api/admin/user",
+    [authToken.verifyToken],
+    controller.nameUpdate
+  );
 };
