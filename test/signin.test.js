@@ -12,7 +12,7 @@ const constants = require('../app/constants')
 
 chai.use(chaiHttp);
 
-describe('User Registration', () => {
+describe('User Sign in', () => {
   after((done) => {
     User.findOne({
         where: {
@@ -34,8 +34,18 @@ describe('User Registration', () => {
             .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.an('object');
-                  res.body.should.contain({message: constants.REGISTERED_SUCCESS});
+                  res.body.should.contain({message:constants.REGISTERED_SUCCESS});
               done();
+            });
+      });
+      it('it should POST to signin user', (done) => {
+        chai.request(server)
+            .post('/api/auth/signin')
+            .send({email: constants.TEST_USER.email, password: constants.TEST_USER.password})
+            .end((err, res) => {
+                  res.should.have.status(200);
+                  res.body.accessToken.should.be.a('string');
+                  done();
             });
       });
   });
