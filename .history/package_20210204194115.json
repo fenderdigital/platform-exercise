@@ -4,7 +4,7 @@
   "description": "Fender Platform Exercise Challenge",
   "main": "index.js",
   "scripts": {
-    "startdb": "docker-compose up -d postgres",
+    "startdb": "docker-compose up postgres",
     "stopdb": "docker-compose down",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
