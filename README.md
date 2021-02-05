@@ -23,8 +23,9 @@ Linux: https://docs.docker.com/engine/install/ , click on Installations per dist
 * example : export PGPASS=password 
 * verify environment variables:
     * echo $PGPASS should display the password set. 
+    
  **Start/Stop database**:
-* start: npm run startdb
-* stop: npm run stopdb
+            * start - npm run startdb
+            * stop - npm run stopdb
 
 
