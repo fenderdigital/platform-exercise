@@ -22,10 +22,21 @@ Linux: https://docs.docker.com/engine/install/ , click on Installations per dist
     * Linux: https://linuxize.com/post/how-to-set-and-list-environment-variables-in-linux/
 * example : export PGPASS=password 
 * verify environment variables:
-    * echo $PGPASS should display the password set. 
+    * echo $PGPASS : displays value. 
+
+## Running and testing the project
+ **Database**:
+* Operations:
+    * start - npm run startdb
+    * stop - npm run stopdb
+            
+**Node Service**:
+* scripts:
+    * npm run app - runs express service
     
- **Start/Stop database**:
-            * start - npm run startdb
-            * stop - npm run stopdb
+**Testing**:
+* test scripts are saved in *.test.js format in test folder:
+    * npm run test - runs defined tests in test folder
+    * html report available in test_reports/*.html folder
 
 

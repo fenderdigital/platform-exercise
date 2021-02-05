@@ -1,1 +1,3 @@
 CREATE DATABASE testdb;
+\c testdb 
+CREATE TABLE IF NOT EXISTS "users" ("id"   SERIAL , "email" VARCHAR(255), "name" VARCHAR(255), "password" VARCHAR(255), "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL, "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL, PRIMARY KEY ("id"));

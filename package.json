@@ -6,7 +6,8 @@
   "scripts": {
     "startdb": "docker-compose up -d postgres",
     "stopdb": "docker-compose down",
-    "test": "mocha 'test/**/*.test.js'"
+    "test": "mocha 'test/**/*.test.js' --reporter mochawesome --reporter-options reportDir=test_reports --exit",
+    "app": "node app/index.js"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,10 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.5.0"
   },
   "devDependencies": {
     "chai": "^4.3.0",

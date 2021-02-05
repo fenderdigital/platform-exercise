@@ -2,7 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-
+const db = require("./models");
+db.sequelize.sync({force: false});
 const userRoutes = "./routes/user.routes"
 
 var corsOptions = {
