@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 
 describe('Route', () => {
   describe('Route Test', () => {
-      it('it GET default route', (done) => {
+      it('it should GET default route', (done) => {
         chai.request(server)
             .get('/')
             .end((err, res) => {
