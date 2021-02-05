@@ -6,7 +6,7 @@
   "scripts": {
     "startdb": "docker-compose up -d postgres",
     "stopdb": "docker-compose down",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha 'test/**/*.test.js'"
   },
   "repository": {
     "type": "git",
