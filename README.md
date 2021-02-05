@@ -5,6 +5,10 @@
 Design and implement a RESTful web service to facilitate a user authentication system. The authentication mechanism should be *token based*. Requests and responses should be in **JSON**.
 
 ## Requirements
+**Install Node and NPM**:
+Windows: https://cloudlinuxtech.com/how-to-install-node-js-npm/
+Mac: https://blog.teamtreehouse.com/install-node-js-npm-mac
+Linux: https://linuxconfig.org/how-to-install-node-js-on-linux
 
 **Install Docker**: 
 Windows: https://docs.docker.com/docker-for-windows/install/
