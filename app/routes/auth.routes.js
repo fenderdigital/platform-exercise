@@ -22,5 +22,7 @@ module.exports = function(app) {
     controller.signup
   );
  app.post("/api/auth/signin", controller.signin);
+
+ //Ensure Front End invalidates token
  app.post("/api/auth/logout",  [authToken.verifyToken,authToken.destroyToken]);
 };

@@ -14,3 +14,20 @@ services:
       - "5432:5432"
 
     restart: unless-stopped
+  app:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      NODE_ENV: development
+      PORT: 8080
+      PGPASS: ${PGPASS}
+    ports:
+      - "8080:8080"
+    command: npm run start
+    volumes:
+      - .:/app/
+      - /app/node_modules
+
+volumes:
+  postgres:

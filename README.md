@@ -29,6 +29,18 @@ Linux: https://docs.docker.com/engine/install/ , click on Installations per dist
     * echo $PGPASS : displays value. 
 
 ## Running and testing the project
+
+**Installation**:
+* clone this project
+* run npm install in project directory
+
+**Quick Start**:
+* npm run fullTest : to build database and run all tests.
+* npm run service-front : Start and run all services with console logging
+    * interactive kill on console to end. 
+* npm run service : Start and run all services in background
+    * npm run stopdb : to stop services. 
+
  **Database**:
 * Operations:
     * start - npm run startdb
@@ -40,7 +52,30 @@ Linux: https://docs.docker.com/engine/install/ , click on Installations per dist
     
 **Testing**:
 * test scripts are saved in *.test.js format in test folder:
-    * npm run test - runs defined tests in test folder
+    * npm run test - runs all tests in test folder
+        * signup.test.js - test user sign up
+        * signin.test.js - test user sign in
+        * logout.test.js - test user sign out
+        * route.test.js - test default route
+        * auth_access.test.js - test protected resource access
+        * auth_update.test.js - test protected resource access
+    * npm run fullTest - builds the database and runs all tests, shuts down database
     * html report available in test_reports/*.html folder
+
+**Service**
+* To start service, npm run service
+
+**Troubleshooting**:
+* to restart database 
+    * npm run stopdb && npm run startdb
+* Postgres authentication error
+    * ensure environmental variables are set - look at [environment variables](#environment-variable) section above.
+    * try running commands with environment variable. example:
+        * PGPASS=thepassword PGTEST=true npm run startdb 
+        * PGPASS=thepassword PGTEST=true npm run test 
+        * PGPASS=thepassword PGTEST=true npm run stopdb 
+        
+
+
 
 

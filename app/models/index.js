@@ -10,6 +10,8 @@ const Sequelize = require("sequelize");
 if(process.env.PGTEST==="true"){
   config.HOST="localhost"
 }
+
+console.log(config.HOST)
 const sequelize = new Sequelize(
   config.DB,
   config.USER,

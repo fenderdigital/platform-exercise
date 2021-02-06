@@ -7,7 +7,12 @@
     "startdb": "docker-compose up -d postgres",
     "stopdb": "docker-compose down",
     "test": "mocha 'test/**/*.test.js' --reporter mochawesome --reporter-options reportDir=test_reports --exit",
-    "app": "node app/index.js"
+    "app": "node app/index.js",
+    "start": "nodemon -L app/bin/www",
+    "fullTest": "npm run stopdb && npm run startdb && sleep 3 && PGPASS=$PGPASS npm run test && npm run stopdb && npm run openreport",
+    "openreport": "open test_reports/mochawesome.html",
+    "service": "docker-compose build && docker-compose up -d",
+    "service-front": "docker-compose build && docker-compose up"
   },
   "repository": {
     "type": "git",
@@ -31,7 +36,8 @@
     "chai-http": "^4.3.0",
     "debug": "^4.3.1",
     "mocha": "^8.2.1",
-    "mochawesome": "^6.2.1"
+    "mochawesome": "^6.2.1",
+    "nodemon": "^2.0.7"
   },
   "bugs": {
     "url": "https://github.com/ekw8/platform-exercise/issues"
