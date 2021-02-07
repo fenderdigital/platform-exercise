@@ -4,6 +4,7 @@
   "description": "Fender Platform Exercise Challenge",
   "main": "index.js",
   "scripts": {
+    "build": "docker-compose build",
     "startdb": "docker-compose up -d postgres",
     "stopdb": "docker-compose down",
     "test": "mocha 'test/**/*.test.js' --reporter mochawesome --reporter-options reportDir=test_reports --exit",

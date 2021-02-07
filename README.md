@@ -6,16 +6,10 @@ Design and implement a RESTful web service to facilitate a user authentication s
 The authentication mechanism should be *token based*. Requests and responses should be in **JSON**.
 
 ## Proposed AWS Architecture
-![Proposed AWS Architecture (Simple)](fdr.png)
+[Proposed AWS Architecture (Simple)](fdr.png)
 
-* This project provides a working prototype of basic token authentication REST API service using node and Express. 
-A working docker container is [built](#quick-start) and [tested](#quick-start). Test reports can be accessed in the test_reports folder 
-## Features 
-* User Registration
-* User Sign In
-* User access protected resource
-* User update protected resource
-* User Log out
+* This project provides a basic token authentication REST API service using node and Express. A working docker container is [built](#quick-start) and [tested](#quick-start).
+* Container can be deployed in ECS along with the other AWS components.
 
 ## TODO 
 * Role based user schema
@@ -23,20 +17,16 @@ A working docker container is [built](#quick-start) and [tested](#quick-start). 
 * set up Api Gateway, CloudFront and ELB
 ## Requirements
 **Install Node and NPM**:
-
-* Windows: [https://cloudlinuxtech.com/how-to-install-node-js-npm/](https://cloudlinuxtech.com/how-to-install-node-js-npm/)
-* Mac: https://blog.teamtreehouse.com/install-node-js-npm-mac
-* Linux: https://linuxconfig.org/how-to-install-node-js-on-linux
+Windows: https://cloudlinuxtech.com/how-to-install-node-js-npm/
+Mac: https://blog.teamtreehouse.com/install-node-js-npm-mac
+Linux: https://linuxconfig.org/how-to-install-node-js-on-linux
 
 **Install Docker**: 
-* Windows: https://docs.docker.com/docker-for-windows/install/
-* Mac: https://docs.docker.com/docker-for-mac/install/
-* Linux: https://docs.docker.com/engine/install/ , click on Installations per distro
+Windows: https://docs.docker.com/docker-for-windows/install/
+Mac: https://docs.docker.com/docker-for-mac/install/
+Linux: https://docs.docker.com/engine/install/ , click on Installations per distro
 
-<a name="environment-variable">
-<b>Environment Variables</b>:
-</a>
-
+**Environment Variables**:
 * Required environment variables :
     *  PGPASS - password used for database
     * PGTEST - boolean, set to true when running test.
@@ -51,18 +41,18 @@ A working docker container is [built](#quick-start) and [tested](#quick-start). 
 
 ## Running and testing the project
 
-**Installation**:
-* clone this project
-* run npm install in project directory
-<a name="quick-start">
-<b>Quick Start</b>:
-</a>
+**Quick Start (Ensure System requirements have been met**:
 
-* npm run fullTest : to build database and run all tests.
-* npm run service-front : Start and run all services with console logging
-    * interactive kill on console to end. 
-* npm run service : Start and run all services in background
-    * npm run stopdb : to stop services. 
+1. Clone this project
+2. **echo $PGPASS $PGTEST** : _to verify that password and test flag has been set._
+2. change to project directory
+3. **npm install && npm run build** : _to install dependencies and build container_
+3. **npm run fullTest** : _start database and runs all tests. Report available in test_reports directory_
+4. Other scripts :
+    * **npm run fullTest** : _to build database and run all tests._
+    * **npm run service-front** : _Start and run all services with console logging_
+    * **pm run service** : _Start and run all services in background_
+    *** npm run stopdb** : _to stop services._ 
 
  **Database**:
 * Operations:
@@ -74,6 +64,7 @@ A working docker container is [built](#quick-start) and [tested](#quick-start). 
     * npm run app - runs express service
     
 **Testing**:
+* Postman was used for initia tests, included in test/FENDER.postman_collection.json
 * test scripts are saved in *.test.js format in test folder:
     * npm run test - runs all tests in test folder
         * signup.test.js - test user sign up
@@ -128,7 +119,7 @@ A working docker container is [built](#quick-start) and [tested](#quick-start). 
 * to restart database 
     * npm run stopdb && npm run startdb
 * Postgres authentication error
-    * ensure environmental variables are set - look at [environment variable](#environment-variable) section above.
+    * ensure environmental variables are set - look at [environment variables](#environment-variable) section above.
     * try running commands with environment variable. example:
         * PGPASS=thepassword PGTEST=true npm run startdb 
         * PGPASS=thepassword PGTEST=true npm run test 
