@@ -6,7 +6,7 @@ Design and implement a RESTful web service to facilitate a user authentication s
 The authentication mechanism should be *token based*. Requests and responses should be in **JSON**.
 
 ## Proposed AWS Architecture
-[Proposed AWS Architecture (Simple)](fdr.png)
+![Proposed AWS Architecture (Simple)](fdr.png)
 
 ## Demo Video
 [![Platform Exercise Demo Video](http://img.youtube.com/vi/YdtFnYNu7dk/0.jpg)](http://www.youtube.com/watch?v=YdtFnYNu7dk "Platform Exercise Demo Video")
