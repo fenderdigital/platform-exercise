@@ -8,7 +8,7 @@ The authentication mechanism should be *token based*. Requests and responses sho
 ## Proposed AWS Architecture
 [Proposed AWS Architecture (Simple)](fdr.png)
 
-## Demo
+## Demo Video
 [![Platform Exercise Demo Video](http://img.youtube.com/vi/YdtFnYNu7dk/0.jpg)](http://www.youtube.com/watch?v=YdtFnYNu7dk "Platform Exercise Demo Video")
 
 * This project provides a basic token authentication REST API service using node and Express. A working docker container is [built](#quick-start) and [tested](#quick-start).
