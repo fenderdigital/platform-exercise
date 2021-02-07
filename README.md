@@ -8,6 +8,9 @@ The authentication mechanism should be *token based*. Requests and responses sho
 ## Proposed AWS Architecture
 [Proposed AWS Architecture (Simple)](fdr.png)
 
+## Demo
+[![Platform Exercise Demo Video](http://img.youtube.com/vi/YdtFnYNu7dk/0.jpg)](http://www.youtube.com/watch?v=YdtFnYNu7dk "Platform Exercise Demo Video")
+
 * This project provides a basic token authentication REST API service using node and Express. A working docker container is [built](#quick-start) and [tested](#quick-start).
 * Container can be deployed in ECS along with the other AWS components.
 
@@ -49,7 +52,6 @@ Linux: https://docs.docker.com/engine/install/ , click on Installations per dist
 3. **npm install && npm run build** : _to install dependencies and build container_
 3. **npm run fullTest** : _start database and runs all tests. Report available in test_reports directory_
 4. Other scripts :
-    * **npm run fullTest** : _to build database and run all tests._
     * **npm run service-front** : _Start and run all services with console logging_
     * **pm run service** : _Start and run all services in background_
     *** npm run stopdb** : _to stop services._ 
