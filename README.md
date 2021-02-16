@@ -45,3 +45,9 @@ Please include:
 
 Please fork this repo and commit your code into that fork.  Show your work and process through those commits.
 
+
+Notes - From Developer
+- come up with a better logging solution
+- standardize the API responses
+- currently, there is no refresh or redirect implemented
+- potentially, soft delete user model

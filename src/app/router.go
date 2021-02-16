@@ -19,12 +19,12 @@ func InitRouter(s Services, ginMode string) (*gin.Engine, error) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
-	r.POST("/register", handlers.Register())
-	r.POST("/login", handlers.Login())
+	r.POST("/register", handlers.Register(s.User))
+	r.POST("/login", handlers.Login(s.User))
 	r.POST("/logout", handlers.Logout())
 
-	r.GET("/user", handlers.GetUser(s.User))
 	r.PUT("/user", handlers.UpdateUser(s.User))
+	r.DELETE("/user", handlers.DeleteUser(s.User))
 
 	return r, nil
 }

@@ -11,9 +11,10 @@ func NewUsersRepo(db *gorm.DB) UsersRepo {
 }
 
 type UsersRepo interface {
-	Get() (*models.User, error)
+	Get(email string) (*models.User, error)
 	Create(user *models.User) error
 	Update(user *models.User) error
+	Delete(user *models.User) error
 }
 
 type usersRepo struct {
@@ -21,8 +22,13 @@ type usersRepo struct {
 }
 
 // Retrieve the user model
-func (u *usersRepo) Get() (*models.User, error) {
-	return nil, nil
+func (u *usersRepo) Get(email string) (*models.User, error) {
+	var user models.User
+	if err := u.db.Where("email = ?", email).Find(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
 
 // Create a new user model
@@ -42,4 +48,9 @@ func (u *usersRepo) Update(user *models.User) error {
 			"FirstName": user.FirstName,
 			"LastName":  user.LastName,
 		}).Error
+}
+
+// Delete the specified user model
+func (u *usersRepo) Delete(user *models.User) error {
+	return u.db.Where("name = ?", "jinzhu").Delete(&user).Error
 }
