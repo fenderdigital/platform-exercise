@@ -1,7 +1,6 @@
 package repos
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -20,8 +19,18 @@ func TestUsersRepo(t *testing.T) {
 		t.Fatalf("error: %v\n", err.Error())
 	}
 
-	userRepo := NewUsersRepo(db)
+	// hacky solution for development testing.
+	// proper way would be to create a new
+	// database with a random string and
+	// drop that database after test run
 
+	// if you don't truncate - you run into race conditions on
+	// subsequent runs of the tests
+	if err = db.Exec(`TRUNCATE users`).Error; err != nil {
+		t.Fatalf("error truncating users table: %v\n", err.Error())
+	}
+
+	userRepo := NewUsersRepo(db)
 
 	t.Run("Create", func(t *testing.T) {
 		testUser := models.User{
@@ -48,16 +57,13 @@ func TestUsersRepo(t *testing.T) {
 
 		testUser.FirstName = "NewFirst"
 		testUser.LastName = "NewLast"
-
 		err = userRepo.Update(&testUser)
 		require.NoError(t, err, "error updating user")
-		//assert.Equal
 
-		fmt.Println("---------------")
-		fmt.Println("---------------")
-		fmt.Println("---------------")
-		fmt.Printf("testUser:%v\n", testUser)
-		fmt.Println("---------------")
+		var found models.User
+		err = db.Where("id = ?", testUser.ID).Find(&found).Error
+		require.NoError(t, err, "error updating user")
+		assert.Equal(t, testUser.FirstName, found.FirstName)
+		assert.Equal(t, testUser.LastName, found.LastName)
 	})
-
 }
