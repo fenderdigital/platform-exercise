@@ -9,10 +9,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 
+	"platform-exer/src/app/types"
 	"platform-exer/src/models"
 	"platform-exer/src/repos"
 
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go"
 )
 
 type RegisterRequest struct {
@@ -54,7 +55,7 @@ func Register(r repos.UsersRepo) gin.HandlerFunc {
 
 		// TODO make this value configurable
 		expirationTime := time.Now().Add(time.Minute * 5)
-		claims := &Claims{
+		claims := &types.Claims{
 			Email: u.Email,
 			StandardClaims: jwt.StandardClaims{
 				ExpiresAt: expirationTime.Unix(),
@@ -85,11 +86,6 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
-type Claims struct {
-	Email string `json:"email"`
-	jwt.StandardClaims
-}
-
 // Login user
 func Login(r repos.UsersRepo) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -116,7 +112,7 @@ func Login(r repos.UsersRepo) gin.HandlerFunc {
 
 		// TODO make this value configurable
 		expirationTime := time.Now().Add(time.Minute * 5)
-		claims := &Claims{
+		claims := &types.Claims{
 			Email: lr.Email,
 			StandardClaims: jwt.StandardClaims{
 				ExpiresAt: expirationTime.Unix(),

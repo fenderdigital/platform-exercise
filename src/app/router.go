@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"platform-exer/src/app/handlers"
+	"platform-exer/src/app/middleware"
 )
 
 func InitRouter(s Services, ginMode string) (*gin.Engine, error) {
@@ -23,8 +24,8 @@ func InitRouter(s Services, ginMode string) (*gin.Engine, error) {
 	r.POST("/login", handlers.Login(s.User))
 	r.POST("/logout", handlers.Logout())
 
-	r.PUT("/user", handlers.UpdateUser(s.User))
-	r.DELETE("/user", handlers.DeleteUser(s.User))
+	r.PUT("/user", middleware.UserFromJWT(s.User), handlers.UpdateUser(s.User))
+	r.DELETE("/user", middleware.UserFromJWT(s.User), handlers.DeleteUser(s.User))
 
 	return r, nil
 }
