@@ -1,5 +1,20 @@
 # Fender Digital Platform Engineering Challenge
 
+
+## Setup
+This application assumes that the user has Docker installed on their local environment.
+
+
+    $ cp example.env .env
+    $ make deps
+    $ make local
+    
+## Run Tests
+To run the application's unit tests - run:
+
+    $ make test
+
+
 ## Description
 
 Design and implement a RESTful web service to facilitate a user authentication system. The authentication mechanism should be *token based*. Requests and responses should be in **JSON**.
