@@ -1,0 +1,27 @@
+version: "3.6"
+
+services:
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_DB: platform_exercise
+      POSTGRES_PASSWORD: password
+
+  app:
+    build:
+      context: .
+    working_dir: /app/src
+    command: go run main.go server
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
+
+
+volumes:
+  db-volume:
