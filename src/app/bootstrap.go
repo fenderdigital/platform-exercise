@@ -4,11 +4,14 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"platform-exercise/src/config"
+	"platform-exer/src/repos"
+	"platform-exer/src/config"
 )
 
 type Services struct {
 	DB *gorm.DB
+
+	User repos.UsersRepo
 }
 
 // Initialize application services
@@ -20,6 +23,8 @@ func InitServices() (Services, error) {
 	if err != nil {
 		return s, err
 	}
+
+	s.User = repos.NewUsersRepo(s.DB)
 
 	return s, nil
 }

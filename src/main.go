@@ -4,6 +4,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+
+	"platform-exer/src/cmd"
 )
 
 func main() {
@@ -12,7 +14,9 @@ func main() {
 	}
 
 	rootCmd.SetOut(os.Stdout)
-	rootCmd.AddCommand()
+	rootCmd.AddCommand(
+		cmd.MigrateCmd,
+		cmd.ServerCmd)
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
