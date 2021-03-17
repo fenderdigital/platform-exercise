@@ -28,7 +28,7 @@ RUN go build -o api main.go
 
 # Run the Go Binary in Alpine.
 FROM alpine:3.7
-COPY --from=build_api /service/app/private.pem /app/private.pem
+COPY --from=build_api /service/app/keys/private.pem /app/private.pem
 COPY --from=build_api /service/app/admin/admin /app/admin
 COPY --from=build_api /service/app/api/api /app/api
 WORKDIR /app
