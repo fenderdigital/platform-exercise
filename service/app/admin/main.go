@@ -13,7 +13,8 @@ import (
 )
 
 func main() {
-	if err := run(); err != nil {
+	log := log.New(os.Stdout, "ADMIN : ", log.LstdFlags|log.Lmicroseconds|log.Lshortfile)
+	if err := run(log); err != nil {
 		if errors.Cause(err) != commands.ErrHelp {
 			log.Printf("error: %s", err)
 		}
@@ -21,7 +22,7 @@ func main() {
 	}
 }
 
-func run() error {
+func run(log *log.Logger) error {
 
 	var cfg struct {
 		Args conf.Args
@@ -82,10 +83,10 @@ func run() error {
 		}
 
 	case "gentoken":
-		email := cfg.Args.Num(1)
+		id := cfg.Args.Num(1)
 		privateKeyFile := cfg.Args.Num(2)
 		algorithm := cfg.Args.Num(3)
-		if err := commands.GenToken(dbConfig, email, privateKeyFile, algorithm); err != nil {
+		if err := commands.GenToken("000", log, dbConfig, id, privateKeyFile, algorithm); err != nil {
 			return errors.Wrap(err, "generating token")
 		}
 

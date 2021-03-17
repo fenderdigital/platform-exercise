@@ -2,10 +2,15 @@
 package database
 
 import (
+	"fmt"
+	"reflect"
+	"strings"
+
 	_ "github.com/lib/pq" // Initialize the database driver.
 
 	"context"
 	"errors"
+
 	//"fmt"
 	"net/url"
 	//"reflect"
@@ -51,6 +56,49 @@ func Open(cfg Config) (*sqlx.DB, error) {
 	return sqlx.Open("postgres", u.String())
 }
 
+// NamedQuerySlice is a helper function for executing queries that return a
+// collection of data to be unmarshaled into a slice.
+func NamedQuerySlice(ctx context.Context, db *sqlx.DB, query string, data interface{}, dest interface{}) error {
+	rows, err := db.NamedQueryContext(ctx, query, data)
+	if err != nil {
+		return err
+	}
+
+	val := reflect.ValueOf(dest)
+	if val.Kind() != reflect.Ptr || val.Elem().Kind() != reflect.Slice {
+		return errors.New("must provide a pointer to a slice")
+	}
+
+	slice := val.Elem()
+	for rows.Next() {
+		v := reflect.New(slice.Type().Elem())
+		if err := rows.StructScan(v.Interface()); err != nil {
+			return err
+		}
+		slice.Set(reflect.Append(slice, v.Elem()))
+	}
+
+	return nil
+}
+
+// NamedQueryStruct is a helper function for executing queries that return a
+// single value to be unmarshalled into a struct type.
+func NamedQueryStruct(ctx context.Context, db *sqlx.DB, query string, data interface{}, dest interface{}) error {
+	rows, err := db.NamedQueryContext(ctx, query, data)
+	if err != nil {
+		return err
+	}
+	if !rows.Next() {
+		return ErrNotFound
+	}
+
+	if err := rows.StructScan(dest); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // StatusCheck returns nil if it can successfully talk to the database. It
 // returns a non-nil error otherwise.
 func StatusCheck(ctx context.Context, db *sqlx.DB) error {
@@ -64,4 +112,30 @@ func StatusCheck(ctx context.Context, db *sqlx.DB) error {
 	const q = `SELECT true`
 	var tmp bool
 	return db.QueryRowContext(ctx, q).Scan(&tmp)
+}
+
+// Log provides a pretty print version of the query and parameters.
+func Log(query string, args ...interface{}) string {
+	query, params, err := sqlx.Named(query, args)
+	if err != nil {
+		return err.Error()
+	}
+
+	for _, param := range params {
+		var value string
+		switch v := param.(type) {
+		case string:
+			value = fmt.Sprintf("%q", v)
+		case []byte:
+			value = fmt.Sprintf("%q", string(v))
+		default:
+			value = fmt.Sprintf("%v", v)
+		}
+		query = strings.Replace(query, "?", value, 1)
+	}
+
+	query = strings.Replace(query, "\t", "", -1)
+	query = strings.Replace(query, "\n", " ", -1)
+
+	return fmt.Sprintf("[%s]\n", strings.Trim(query, " "))
 }

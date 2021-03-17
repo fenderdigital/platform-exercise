@@ -1,14 +1,14 @@
 # Build the Go Binary.
-FROM golang:1.14.4 as build_api
+FROM golang:1.16 as build_api
 ENV CGO_ENABLED 0
 
 # Create a location in the container for the source code. Using the
 # default GOPATH location.
 RUN mkdir -p /service
 
-COPY go.* /service/
-WORKDIR /service
-RUN go mod download
+#COPY go.* /service/
+#WORKDIR /service
+#RUN go mod download
 
 
 # Copy the source code into the container.

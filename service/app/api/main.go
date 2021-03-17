@@ -48,7 +48,7 @@ func run(log *log.Logger) error {
 			DisableTLS bool   `conf:"default:true"`
 		}
 		Auth struct {
-			KeysFolder string `conf:"default:zarf/keys/"`
+			KeysFolder string `conf:"default:/app/keys/"`
 			Algorithm  string `conf:"default:RS256"`
 		}
 	}

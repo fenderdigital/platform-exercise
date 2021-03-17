@@ -5,18 +5,20 @@ import (
 	"crypto/rsa"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"time"
 
 	"platform-exercise/service/business/auth"
 	"platform-exercise/service/business/data/user"
 	"platform-exercise/service/foundation/database"
+	"platform-exercise/service/foundation/keystore"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go/v4"
 	"github.com/pkg/errors"
 )
 
 // GenToken generates a JWT for the specified user.
-func GenToken(cfg database.Config, id string, privateKeyFile string, algorithm string) error {
+func GenToken(traceID string, log *log.Logger, cfg database.Config, id string, privateKeyFile string, algorithm string) error {
 	if id == "" || privateKeyFile == "" || algorithm == "" {
 		fmt.Println("help: gentoken <id> <private_key_file> <algorithm>")
 		fmt.Println("algorithm: RS256, HS256")
@@ -32,14 +34,17 @@ func GenToken(cfg database.Config, id string, privateKeyFile string, algorithm s
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
+	u := user.New(log, db)
+
 	// The call to retrieve a user requires an Admin role by the caller.
 	claims := auth.Claims{
 		StandardClaims: jwt.StandardClaims{
-			Subject: "admin",
+			Subject: id,
 		},
 		Roles: []string{auth.RoleAdmin},
 	}
-	user, err := user.One(ctx, claims, db, id)
+
+	usr, err := u.QueryByID(ctx, traceID, claims, id)
 	if err != nil {
 		return errors.Wrap(err, "retrieve user")
 	}
@@ -54,26 +59,10 @@ func GenToken(cfg database.Config, id string, privateKeyFile string, algorithm s
 		return errors.Wrap(err, "parsing PEM into private key")
 	}
 
-	// In a production system, a key id (KID) is used to retrieve the correct
-	// public key to parse a JWT for auth and claims. A key lookup function is
-	// provided to perform the task of retrieving a KID for a given public key.
-	// In this code, I am writing a lookup function that will return the public
-	// key for the private key provided with an arbitary KID.
-	keyID := "54bb2165-71e1-41a6-af3e-7da4a0e1e2c1"
-	keyLookupFunc := func(publicKID string) (*rsa.PublicKey, error) {
-		switch publicKID {
-		case keyID:
-			return &privateKey.PublicKey, nil
-		}
-		return nil, fmt.Errorf("no public key found for the specified kid: %s", publicKID)
-	}
-
 	// An authenticator maintains the state required to handle JWT processing.
-	// It requires the private key for generating tokens. The KID for access
-	// to the corresponding public key, the algorithms to use (RS256), and the
-	// key lookup function to perform the actual retrieve of the KID to public
-	// key lookup.
-	a, err := auth.New(privateKey, keyID, algorithm, keyLookupFunc)
+	// It requires a keystore to lookup private and public keys based on a
+	// key id. There is a keystore implementation in the project.
+	a, err := auth.New(algorithm, keystore.NewMap(map[string]*rsa.PrivateKey{id: privateKey}))
 	if err != nil {
 		return errors.Wrap(err, "constructing auth")
 	}
@@ -92,18 +81,18 @@ func GenToken(cfg database.Config, id string, privateKeyFile string, algorithm s
 	claims = auth.Claims{
 		StandardClaims: jwt.StandardClaims{
 			Issuer:    "service project",
-			Subject:   user.ID,
-			ExpiresAt: time.Now().Add(8760 * time.Hour).Unix(),
-			IssuedAt:  time.Now().Unix(),
+			Subject:   usr.ID,
+			ExpiresAt: jwt.At(time.Now().Add(8760 * time.Hour)),
+			IssuedAt:  jwt.Now(),
 		},
-		Roles: user.Roles,
+		Roles: usr.Roles,
 	}
 
 	// This will generate a JWT with the claims embedded in them. The database
 	// with need to be configured with the information found in the public key
 	// file to validate these claims. Dgraph does not support key rotate at
 	// this time.
-	token, err := a.GenerateToken(claims)
+	token, err := a.GenerateToken(id, claims)
 	if err != nil {
 		return errors.Wrap(err, "generating token")
 	}
