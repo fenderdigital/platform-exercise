@@ -29,19 +29,19 @@ All of these endpoints should be written from a user's perspective.
 **README**
 
 Please include:
-- a readme file that explains your thinking
-- how to setup and run the project
-- if you chose to use a database, include instructions on how to set that up
-- if you have tests, include instructions on how to run them
-- a description of what enhancements you might make if you had more time.
+- A readme file that explains your thinking
+- How to set up and run the project
+- If you choose to use a database, include instructions on how to set that up
+- If you have tests, include instructions on how to run them
+- A description of what enhancements you might make if you had more time.
 
 **Additional Info**
 
 - We expect this project to take a few hours to complete
-- You can use Rails/Sinatra, Python, Go, node.js or shiny-new-framework X, as long as you tell us why you chose it and how it was a good fit for the challenge. 
-- Feel free to use whichever database you'd like; we suggest Postgres. 
+- You can use Python, Go, Node.js, or shiny-new-framework X, as long as you tell us why you chose it and how it was a good fit for the challenge. 
+- You can use whichever database you'd like. 
 - Bonus points for security, specs, etc. 
 - Do as little or as much as you like.
 
-Please fork this repo and commit your code into that fork.  Show your work and process through those commits.
+Please fork this repo and commit your code to it. Then, you can show your work and process through those commits.
 
