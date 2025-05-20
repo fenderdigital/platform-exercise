@@ -1,0 +1,18 @@
+server:
+  port: 8010
+
+spring:
+  application:
+    name: user-registration-application
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/testdb
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  password:
+    utility:
+      bcrypt:
+        log:
+          rounds: 5
